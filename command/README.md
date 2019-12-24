@@ -14,4 +14,16 @@ wk-send-command         \
     --password 1234     \
     --database app \
     --file command/All.sql
+
+wk-send-command     \
+    --user root     \
+    --password 1234 \
+    --database app  \
+    --file command/Join.sql
+
+wk-send-command     \
+    --user root     \
+    --password 1234 \
+    --database app  \
+    --file command/Partition.sql
 ```

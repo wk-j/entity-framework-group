@@ -59,6 +59,10 @@ namespace GroupBy.Controllers {
                 new Student {
                     Course = "en",
                     Score = 60
+                },
+                new Student {
+                    Course = "ma",
+                    Score = 100
                 }
             });
             return context.SaveChanges();
