@@ -14,15 +14,15 @@ namespace GroupBy.Controllers {
         }
 
         DbContextOptions Options() {
-            DbContextOptions options = new DbContextOptionsBuilder()
-                .UseMySql("Host=localhost;User Id=root; Password=1234;Database=App")
-                .UseLoggerFactory(fact)
-                .Options;
-
             // DbContextOptions options = new DbContextOptionsBuilder()
-            //     .UseNpgsql("Host=localhost;User Id=root; Password=1234;Database=app")
+            //     .UseMySql("Host=localhost;User Id=root; Password=1234;Database=App")
             //     .UseLoggerFactory(fact)
             //     .Options;
+
+            DbContextOptions options = new DbContextOptionsBuilder()
+                .UseNpgsql("Host=localhost;User Id=root; Password=1234;Database=app")
+                .UseLoggerFactory(fact)
+                .Options;
 
 
             return options;
@@ -50,11 +50,15 @@ namespace GroupBy.Controllers {
                 },
                 new Student {
                     Course = "th",
-                    Score = 80
+                    Score = 90
                 },
                 new Student {
                     Course = "en",
-                    Score = 80
+                    Score = 90
+                },
+                new Student {
+                    Course = "en",
+                    Score = 60
                 }
             });
             return context.SaveChanges();
