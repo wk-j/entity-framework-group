@@ -101,12 +101,14 @@ namespace GroupBy.Controllers {
             using var context = new MyContext(options);
 
             var rs =
-                from student in context.Students
-                group student by student.Course into students
-                select new {
-                    Value = students.First()
-                };
-
+                from top in (
+                    from r in context.Students
+                    group r by r.Course into rr
+                    select new { rr.Key, Top = rr.Max(x => x.Score) }
+                )
+                join student in context.Students on top.Key equals student.Course
+                where student.Score == top.Top
+                select student;
 
             return rs.ToList();
         }
