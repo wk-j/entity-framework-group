@@ -14,15 +14,15 @@ namespace GroupBy.Controllers {
         }
 
         DbContextOptions Options() {
-            // DbContextOptions options = new DbContextOptionsBuilder()
-            //     .UseMySql("Host=localhost;User Id=root; Password=1234;Database=App")
-            //     .UseLoggerFactory(fact)
-            //     .Options;
-
             DbContextOptions options = new DbContextOptionsBuilder()
-                .UseNpgsql("Host=localhost;User Id=root; Password=1234;Database=app")
+                .UseMySql("Host=localhost;User Id=root; Password=1234;Database=App")
                 .UseLoggerFactory(fact)
                 .Options;
+
+            // DbContextOptions options = new DbContextOptionsBuilder()
+            //     .UseNpgsql("Host=localhost;User Id=root; Password=1234;Database=app")
+            //     .UseLoggerFactory(fact)
+            //     .Options;
 
 
             return options;
@@ -80,11 +80,27 @@ namespace GroupBy.Controllers {
                 .GroupBy(x => x.Course)
                 .Select(x => new {
                     Key = x.Key,
-                    Count = x.Count()
+                    Count = x.Count(),
                 })
                 .ToList();
 
             return student;
+        }
+
+        [HttpGet]
+        public IEnumerable<dynamic> Group3() {
+            var options = Options();
+            using var context = new MyContext(options);
+
+            var rs =
+                from student in context.Students
+                group student by student.Course into students
+                select new {
+                    Value = students.First()
+                };
+
+
+            return rs.ToList();
         }
     }
 }
