@@ -8,7 +8,14 @@ namespace GroupBy.Controllers {
 
     public partial class GroupController {
         [HttpGet]
-        public IEnumerable<dynamic> Group3() {
+        public IEnumerable<Student> All() {
+            var options = Options();
+            using var context = new AppContext(options);
+            return context.Students.ToArray();
+        }
+
+        [HttpGet]
+        public IEnumerable<dynamic> GroupKey() {
             var options = Options();
             using var context = new AppContext(options);
             var student = context.Students
@@ -23,27 +30,13 @@ namespace GroupBy.Controllers {
         }
 
         [HttpGet]
-        public IEnumerable<dynamic> Group2() {
+        public IEnumerable<Student> FirstOrDefault() {
             var options = Options();
             using var context = new AppContext(options);
             var student = context.Students
                 .GroupBy(x => x.Course)
-                .Select(x => new {
-                    Key = x.Key,
-                    Count = x.Count()
-                })
-                .ToList();
-
-            return student;
-        }
-
-        [HttpGet]
-        public IEnumerable<Student> Group1() {
-            var options = Options();
-            using var context = new AppContext(options);
-            var student = context.Students
-                .GroupBy(x => x.Course)
-                .Select(x => x.FirstOrDefault())
+                .Select(x => x.First())
+                .OrderBy(x => x.Score)
                 .ToList();
 
             return student;

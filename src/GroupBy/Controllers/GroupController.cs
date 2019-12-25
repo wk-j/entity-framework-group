@@ -8,9 +8,26 @@ namespace GroupBy.Controllers {
     [Route("api/[controller]/[action]")]
 
     public partial class GroupController {
+        [HttpGet]
+        public IEnumerable<dynamic> SubQuery() {
+            var options = Options();
+            using var context = new AppContext(options);
+
+            var rs =
+                from top in (
+                    from student in context.Students
+                    group student by student.Course into students
+                    select new { students.Key, Top = students.Max(x => x.Score) }
+                )
+                join student in context.Students on top.Key equals student.Course
+                where student.Score == top.Top
+                select student;
+
+            return rs.ToList();
+        }
 
         [HttpGet]
-        public IEnumerable<dynamic> Group2() {
+        public IEnumerable<dynamic> GroupKey() {
             var options = Options();
             using var context = new AppContext(options);
             var student = context.Students
@@ -25,7 +42,7 @@ namespace GroupBy.Controllers {
         }
 
         [HttpGet]
-        public IEnumerable<Student> Group1() {
+        public IEnumerable<Student> FirstOrDefault() {
             var options = Options();
             using var context = new AppContext(options);
             var student = context.Students
@@ -81,11 +98,19 @@ namespace GroupBy.Controllers {
                 },
                 new Student {
                     Course = "th",
-                    Score = 80
+                    Score = 90
                 },
                 new Student {
                     Course = "en",
-                    Score = 80
+                    Score = 90
+                },
+                new Student {
+                    Course = "en",
+                    Score = 60
+                },
+                new Student {
+                    Course = "ma",
+                    Score = 100
                 }
             });
             return context.SaveChanges();
