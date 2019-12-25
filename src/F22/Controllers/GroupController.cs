@@ -5,9 +5,22 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
 namespace GroupBy.Controllers {
-    [Route("api/[controller]/[action]")]
 
     public partial class GroupController {
+        [HttpGet]
+        public IEnumerable<dynamic> Group3() {
+            var options = Options();
+            using var context = new AppContext(options);
+            var student = context.Students
+                .GroupBy(x => x.Course)
+                .Select(x => new {
+                    Key = x.Key,
+                    Count = x.Count()
+                })
+                .ToList();
+
+            return student;
+        }
 
         [HttpGet]
         public IEnumerable<dynamic> Group2() {
@@ -35,13 +48,14 @@ namespace GroupBy.Controllers {
 
             return student;
         }
-
     }
 
+    [Route("api/[controller]/[action]")]
     public partial class GroupController : ControllerBase {
         ILoggerFactory fact;
-        public GroupController(ILoggerFactory factory) {
-            this.fact = factory;
+        public GroupController() {
+            var fact = new LoggerFactory().AddConsole();
+            this.fact = fact;
         }
 
         DbContextOptions Options() {
@@ -90,7 +104,5 @@ namespace GroupBy.Controllers {
             });
             return context.SaveChanges();
         }
-
-
     }
 }

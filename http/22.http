@@ -1,0 +1,8 @@
+
+GET http://localhost:8000/api/group/insert
+
+###
+GET http://localhost:8000/api/group/group1
+
+###
+GET http://localhost:8000/api/group/group2
