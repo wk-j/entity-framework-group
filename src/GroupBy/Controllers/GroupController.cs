@@ -47,6 +47,19 @@ namespace GroupBy.Controllers {
             using var context = new AppContext(options);
             var student = context.Students
                 .GroupBy(x => x.Course)
+                .Select(x => x.First())
+                .OrderBy(x => x.Score);
+
+            return student.ToList();
+        }
+
+        [HttpGet]
+        public IEnumerable<Student> AsEnumerable() {
+            var options = Options();
+            using var context = new AppContext(options);
+            var student = context.Students
+                .AsEnumerable()
+                .GroupBy(x => x.Course)
                 .Select(x => x.FirstOrDefault())
                 .ToList();
 

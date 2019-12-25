@@ -6,3 +6,9 @@ GET http://localhost:5000/api/group/groupKey
 
 ###
 GET http://localhost:5000/api/group/firstOrDefault
+
+###
+GET http://localhost:5000/api/group/asEnumerable
+
+###
+GET http://localhost:5000/api/group/subQuery

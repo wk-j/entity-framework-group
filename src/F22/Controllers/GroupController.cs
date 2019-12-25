@@ -36,10 +36,9 @@ namespace GroupBy.Controllers {
             var student = context.Students
                 .GroupBy(x => x.Course)
                 .Select(x => x.First())
-                .OrderBy(x => x.Score)
-                .ToList();
+                .OrderBy(x => x.Score);
 
-            return student;
+            return student.ToList();
         }
     }
 
